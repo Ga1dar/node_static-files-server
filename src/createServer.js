@@ -7,6 +7,7 @@ const path = require('path');
 function createServer() {
   return http.createServer((req, res) => {
     const url = req.url || '';
+    let requestPath = url.slice('/file/'.length);
 
     if (url === '/file' || url.startsWith('/file?')) {
       res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -17,12 +18,10 @@ function createServer() {
 
     if (!url.startsWith('/file/')) {
       res.writeHead(400, { 'Content-Type': 'text/plain' });
-      res.end('Not Found');
+      res.end('Use /file/<filename> to load files');
 
       return;
     }
-
-    let requestPath = url.slice('/file/'.length);
 
     if (requestPath === '') {
       requestPath = 'index.html';
