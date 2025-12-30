@@ -9,18 +9,18 @@ function createServer() {
     const url = req.url || '';
     let requestPath = url.slice('/file/'.length);
 
-    if (url === '/file' || url.startsWith('/file?')) {
-      res.writeHead(200, { 'Content-Type': 'text/plain' });
+    if (!url.startsWith('/file')) {
+      res.writeHead(400, { 'Content-Type': 'text/plain' });
       res.end('Use /file/<filename> to load files');
 
       return;
     }
 
     if (!url.startsWith('/file/')) {
-      res.writeHead(400, { 'Content-Type': 'text/plain' });
-      res.end('Use /file/<filename> to load files');
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/plain');
 
-      return;
+      return res.end('Use /file/<filename> to load files');
     }
 
     if (requestPath === '') {
